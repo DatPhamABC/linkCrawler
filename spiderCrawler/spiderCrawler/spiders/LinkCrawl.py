@@ -6,9 +6,7 @@ import pymongo
 class CrawlSpider(scrapy.Spider):
     name = 'linkcrawl'
 
-    # CLOSESPIDER_PAGECOUNT must equal the number of pageCount in multiSpider.py
     custom_settings = {'FEED_EXPORT_ENCODING': 'utf-8'}
-                       # 'CLOSESPIDER_PAGECOUNT': 20}
 
     def __init__(self, category, *args, **kwargs):
         super(CrawlSpider, self).__init__(*args, **kwargs)
