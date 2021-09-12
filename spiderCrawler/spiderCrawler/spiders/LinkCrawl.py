@@ -7,8 +7,8 @@ class CrawlSpider(scrapy.Spider):
     name = 'linkcrawl'
 
     # CLOSESPIDER_PAGECOUNT must equal the number of pageCount in multiSpider.py
-    custom_settings = {'FEED_EXPORT_ENCODING': 'utf-8',
-                       'CLOSESPIDER_PAGECOUNT': 50}
+    custom_settings = {'FEED_EXPORT_ENCODING': 'utf-8'}
+                       # 'CLOSESPIDER_PAGECOUNT': 20}
 
     def __init__(self, category, *args, **kwargs):
         super(CrawlSpider, self).__init__(*args, **kwargs)
@@ -21,7 +21,8 @@ class CrawlSpider(scrapy.Spider):
         self.start_urls = [f'https://vnexpress.net/thoi-su-p{category}']
 
     def parse(self, response):
-        const_str = ['covid', 'F0', 'F1', 'dịch', 'giãn', 'xét nghiệm', 'tiêm', 'giấy đi đường']
+        const_str = ['covid', 'F0', 'F1', 'dịch bệnh', 'giãn cách', 'xét nghiệm',
+                     'tiêm', 'covid-19', 'chống dịch', 'ổ dịch']
         const_str = [x.lower().encode() for x in const_str]
 
         for article in response.css('#automation_TV0 div.width_common.list-news-subfolder'):
