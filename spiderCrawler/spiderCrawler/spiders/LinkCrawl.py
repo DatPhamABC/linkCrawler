@@ -22,7 +22,7 @@ class CrawlSpider(scrapy.Spider):
 
     def parse(self, response):
         const_str = ['covid', 'F0', 'F1', 'dịch bệnh', 'giãn cách', 'xét nghiệm',
-                     'tiêm', 'covid-19', 'chống dịch', 'ổ dịch']
+                     'tiêm', 'chống dịch', 'ổ dịch']
         const_str = [x.lower().encode() for x in const_str]
 
         for article in response.css('#automation_TV0 div.width_common.list-news-subfolder'):
