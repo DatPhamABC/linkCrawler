@@ -55,5 +55,5 @@ Hướng dẫn cài đặt:
  - Các từ để lọc bài báo được lưu trong const_str
 
 ### 4.3. Ghi chú:
- - Dữ liệu được lưu trong MongoDB với hostname localhost và port 27017
+ - Dữ liệu được lưu trong MongoDB với hostname localhost và port 27017 với database: scrapedLink,  collection: link
  - Mỗi spider mặc định chỉ quét 20 trang
