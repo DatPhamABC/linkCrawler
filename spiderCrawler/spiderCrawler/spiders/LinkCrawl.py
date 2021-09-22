@@ -1,6 +1,8 @@
 import scrapy
 import re
 import pymongo
+import traceback
+import logging
 
 
 class CrawlSpider(scrapy.Spider):
@@ -23,36 +25,45 @@ class CrawlSpider(scrapy.Spider):
                      'tiêm', 'chống dịch', 'ổ dịch']
         const_str = [x.lower().encode() for x in const_str]
 
-        for article in response.css('#automation_TV0 div.width_common.list-news-subfolder'):
-            title = article.css('h3.title-news a::text').get()
-            title = title.replace('\n', '')
-            if not self.check(title, const_str):
-                continue
-            else:
-                desc = article.css('p.description a::text').get()
-                if not self.check(desc, const_str):
-                    continue
-                else:
-                    link = {
-                        'link': article.css('a').attrib['href']
-                    }
-                    self.collection.insert(dict(link))
-
-        if response.css('#automation_TV1 div.width_common.list-news-subfolder'):
-            for article in response.css('#automation_TV1 div.width_common.list-news-subfolder'):
-                title = article.css('h3.title-news a::text').get()
-                title = title.replace('\n', '')
-                if not self.check(title, const_str):
-                    continue
-                else:
-                    desc = article.css('p.description a::text').get()
-                    if not self.check(desc, const_str):
+        if response.css('#automation_TV0 div.width_common.list-news-subfolder'):
+            for article in response.css('#automation_TV0 div.width_common.list-news-subfolder article'):
+                try:
+                    title = article.css('h3 a::text').get()
+                    title = title.replace('\n', '')
+                    if not self.check(title, const_str):
                         continue
                     else:
-                        link = {
-                            'link': article.css('a').attrib['href']
-                        }
-                        self.collection.insert(dict(link))
+                        desc = article.css('p.description a::text').get()
+                        if not self.check(desc, const_str):
+                            continue
+                        else:
+                            link = {
+                                'link': article.css('a').attrib['href']
+                            }
+                            self.collection.insert(dict(link))
+                except Exception as e:
+                    logging.error(traceback.format_exc())
+                    pass
+
+        if response.css('#automation_TV1 div.width_common.list-news-subfolder'):
+            for article in response.css('#automation_TV1 div.width_common.list-news-subfolder article'):
+                try:
+                    title = article.css('h3 a::text').get()
+                    title = title.replace('\n', '')
+                    if not self.check(title, const_str):
+                        continue
+                    else:
+                        desc = article.css('p.description a::text').get()
+                        if not self.check(desc, const_str):
+                            continue
+                        else:
+                            link = {
+                                'link': article.css('a').attrib['href']
+                            }
+                            self.collection.insert(dict(link))
+                except Exception as e:
+                    logging.error(traceback.format_exc())
+                    pass
 
         next_page = response.css('a.btn-page.next-page ::attr(href)').get()
         if next_page is not None:
